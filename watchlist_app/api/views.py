@@ -3,39 +3,41 @@ from os import stat
 from shutil import move
 
 from django.http import HttpResponse
-from watchlist_app.models import Movie
+from watchlist_app.models import WatchList, StreamPlatForm
 from .serializers import MovieSerializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.decorators import APIView
 
-class MovieListAV(APIView):
+class WatchListAV(APIView):
 
     def get(self, request):
-        movies = Movie.objects.all()
+        movies = WatchList.objects.all()
         serializers = MovieSerializers(movies, many=True)
         return Response(serializers.data)
     
     def post(self, request):
-        movie = Movie.objects.all()
+        movie = WatchList.objects.all()
         serializers = MovieSerializers(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data)
+        else:
+            return Response(serializers.errors)
 
-class MovieDetailAV(APIView):
+class WatchDetailAV(APIView):
     def get(self, request, pk):
         try:
-            movie = Movie.objects.get(pk=pk)
-        except Movie.DoesNotExist:
+            movie = WatchList.objects.get(pk=pk)
+        except WatchList.DoesNotExist:
             return Response({"Error" : "Movie not Found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializers = MovieSerializers(movie)
         return Response(serializers.data)
     
     def put(self, request, pk):
-        movie = Movie.objects.get(pk=pk)
+        movie = WatchList.objects.get(pk=pk)
         serializers = MovieSerializers(data=request.data)
         if serializers.is_valid():
             serializers.save()
@@ -44,10 +46,9 @@ class MovieDetailAV(APIView):
             return Response(serializers.errors())
 
     def delete(self, request, pk):
-        movie = Movie.objects.get(pk=pk)
+        movie = WatchList.objects.get(pk=pk)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
 
 
 
