@@ -13,11 +13,17 @@ class WatchListSerializers(serializers.ModelSerializer):
        
 class StreamPlatformSerializers(serializers.ModelSerializer):
 
-    # watchlist = WatchListSerializers(many=True, read_only=True)
-    watchlist = serializers.StringRelatedField(many=True)
+    #watchlist = WatchListSerializers(many=True, read_only=True)
+    watchlist = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        many=True,
+        view_name='watch-detail'
+    )
+    #watchlist = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = StreamPlatForm
         fields = '__all__'
+
 #Serializers class
 
 # class MovieSerializers(serializers.Serializer):

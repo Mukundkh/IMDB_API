@@ -54,7 +54,7 @@ class StreamPlatformListAV(APIView):
 
     def get(self, request):
         platforms = StreamPlatForm.objects.all()
-        serializers = StreamPlatformSerializers(platforms, many=True)
+        serializers = StreamPlatformSerializers(platforms, many=True, context={'request': request})
         return Response(serializers.data)
     
     def post(self, request):
