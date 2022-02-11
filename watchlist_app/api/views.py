@@ -3,12 +3,44 @@ from os import stat
 from shutil import move
 
 from django.http import HttpResponse
-from watchlist_app.models import WatchList, StreamPlatForm
-from watchlist_app.api.serializers import WatchListSerializers, StreamPlatformSerializers
+from watchlist_app.models import Reviews, WatchList, StreamPlatForm
+from watchlist_app.api.serializers import WatchListSerializers, StreamPlatformSerializers, ReviewSerializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.decorators import APIView
+from rest_framework import mixins
+from rest_framework import generics
+
+
+#Using concrete view classes
+class ReviewList(generics.ListCreateAPIView):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewSerializers
+
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewSerializers
+
+
+#Using mixins
+# class ReviewList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+#     queryset = Reviews.objects.all()
+#     serializer_class = ReviewSerializers
+
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args ,**kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+
+# class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+
+#     queryset = Reviews.objects.all()
+#     serializer_class = ReviewSerializers
+
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
 
 class WatchListAV(APIView):
 
