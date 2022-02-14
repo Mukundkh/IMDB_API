@@ -14,9 +14,25 @@ from rest_framework import generics
 
 
 #Using concrete view classes
-class ReviewList(generics.ListCreateAPIView):
-    queryset = Reviews.objects.all()
+
+class ReviewCreate(generics.CreateAPIView):
+
     serializer_class = ReviewSerializers
+
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        movie = WatchList.objects.get(pk=pk)
+
+        serializer.save(watchlist=movie)
+
+class ReviewList(generics.ListAPIView):
+    #queryset = Reviews.objects.all()
+    serializer_class = ReviewSerializers
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Reviews.objects.filter(watchlist=pk)
+
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reviews.objects.all()
