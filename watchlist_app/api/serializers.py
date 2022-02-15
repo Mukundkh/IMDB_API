@@ -11,7 +11,8 @@ class ReviewSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Reviews
-        fields = '__all__'
+        #fields = '__all__'
+        exclude = ('watchlist',)
 
 class WatchListSerializers(serializers.ModelSerializer):
 
