@@ -22,7 +22,7 @@
 #     #print(movie)
 #     except Movie.DoesNotExist:
 #         return HttpResponse("Error")
-    
+
 #     data = {
 #         'name' : movie.name,
 #         'description' : movie.description,

@@ -3,7 +3,8 @@ from rest_framework import serializers
 
 from watchlist_app.models import WatchList, StreamPlatForm, Reviews
 
-#Model Serializers
+# Model Serializers
+
 
 class ReviewSerializers(serializers.ModelSerializer):
 
@@ -14,15 +15,17 @@ class ReviewSerializers(serializers.ModelSerializer):
         #fields = '__all__'
         exclude = ('watchlist',)
 
+
 class WatchListSerializers(serializers.ModelSerializer):
 
-    reviews = ReviewSerializers(many=True, read_only=True)
-    
+    #reviews = ReviewSerializers(many=True, read_only=True)
+    platform = serializers.CharField(source='platform.name')
     class Meta:
         model = WatchList
         fields = '__all__'
         # exclude = ['is_active']
-       
+
+
 class StreamPlatformSerializers(serializers.ModelSerializer):
 
     #watchlist = WatchListSerializers(many=True, read_only=True)
@@ -32,11 +35,12 @@ class StreamPlatformSerializers(serializers.ModelSerializer):
         view_name='watch-detail'
     )
     #watchlist = serializers.StringRelatedField(many=True, read_only=True)
+
     class Meta:
         model = StreamPlatForm
         fields = '__all__'
 
-#Serializers class
+# Serializers class
 
 # class MovieSerializers(serializers.Serializer):
 
@@ -61,9 +65,7 @@ class StreamPlatformSerializers(serializers.ModelSerializer):
 #         instance.save()
 #         return instance
 
-    
-
-    #field level validation
+    # field level validation
     # def validate_name(self, value):
     #     if(len(value)<2):
     #         raise serializers.ValidationError("Name is Too Short")
